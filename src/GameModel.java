@@ -33,7 +33,7 @@ public class GameModel {
         }
         do {
             Collections.shuffle(tiles);
-        }while (!isSolvable ());
+        }while (!isSolvable (tiles));
 
         int index =0;
         for (int row = 0; row < SIZE; row++) {
@@ -48,7 +48,23 @@ public class GameModel {
         }
     }
 
-    public boolean isSolvable(){
+    // Lösbarhetsalgoritm baserad på inverser och tom ruta
+    // Källa: https://www.geeksforgeeks.org/dsa/check-instance-15-puzzle-solvable/
+
+    public boolean isSolvable(List<Integer> tiles) {
+        int inversions = 0;
+        for (int i = 0; i < tiles.size(); i++) {
+            for (int j = i + 1; j < tiles.size(); j++) {
+                int a = tiles.get(i);
+                int b = tiles.get(j);
+                if (a != 0 && b != 0 && a > b) inversions++;
+            }
+        }
+
+        int zeroIndex = tiles.indexOf(0);
+        int rowFromBottom = 3 - (zeroIndex / 4);
+        return (rowFromBottom % 2 == 0) == (inversions % 2 == 0);
+
 
     }
 }
