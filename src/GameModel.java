@@ -29,7 +29,7 @@ public class GameModel {
     public void shuffle(){
         List<Integer> tiles = new ArrayList<>();
         for(int i = 0; i < TILE_COUNT; i++){
-            tiles.add(1);
+            tiles.add(i);
         }
         do {
             Collections.shuffle(tiles);
@@ -64,7 +64,12 @@ public class GameModel {
         int zeroIndex = tiles.indexOf(0);
         int rowFromBottom = 3 - (zeroIndex / 4);
         return (rowFromBottom % 2 == 0) == (inversions % 2 == 0);
+    }
 
-
+    public boolean canMove(int row, int col) {
+        if(row < 0 || row >= SIZE || col < 0 || col >= SIZE) return false;
+        int rowdifference = row - emptyRow;
+        int coldifference = col - emptyCol;
+        return (rowdifference + coldifference == 1);
     }
 }
