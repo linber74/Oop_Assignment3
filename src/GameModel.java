@@ -72,4 +72,34 @@ public class GameModel {
         int coldifference = col - emptyCol;
         return (rowdifference + coldifference == 1);
     }
+
+    public boolean move(int row, int col) {
+        if (canMove(row, col)) {
+            int temp = board[row][col];
+            board[row][col] = board[emptyRow][emptyCol];
+            board[emptyRow][emptyCol] = temp;
+
+            emptyRow = row;
+            emptyCol = col;
+
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isSolved() {
+        int expected = 1;
+        for(int row = 0; row < SIZE; row++){
+            for(int col = 0; col < SIZE; col++){
+                if(row == SIZE - 1 && col == SIZE - 1){
+                    if (board[row][col] != 0) return false;
+                }
+                else {
+                    if (board[row][col] != expected) return false;
+                    expected++;
+                }
+            }
+        }
+        return true;
+    }
 }
