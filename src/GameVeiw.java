@@ -83,4 +83,9 @@ public class GameVeiw extends JFrame {
         }
     }
 
+    public boolean handleClick(int row, int col) {
+        boolean moved = model.move(row, col);
+        updateView();
+        return moved;
+    }
 }
