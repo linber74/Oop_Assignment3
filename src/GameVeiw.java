@@ -28,7 +28,6 @@ public class GameVeiw extends JFrame {
         startButton = new JButton("Nytt Spel");
 
         topPanel.setLayout(new FlowLayout());
-        topPanel.add(titleLabel);
         topPanel.add(startButton);
 
         boardPanel.setLayout(new GridLayout(4, 4));
@@ -51,7 +50,7 @@ public class GameVeiw extends JFrame {
         setTitle("15");
         pack();
         setVisible(true);
-        setLocation(null);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
@@ -87,5 +86,11 @@ public class GameVeiw extends JFrame {
         boolean moved = model.move(row, col);
         updateView();
         return moved;
+    }
+
+    public void resetGame() {
+        model.shuffle();
+        updateView();
+        statusLabel.setText("");
     }
 }
