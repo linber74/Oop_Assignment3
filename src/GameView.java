@@ -3,6 +3,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * GameView bygger upp GUI:t för 15-pusslet.
+ * Den visar brickorna, hanterar knapptryckningar och uppdaterar gränssnittet
+ * baserat på information från modellen. Här kopplas användarens interaktion
+ * till spelmekaniken.
+ */
+
 public class GameView extends JFrame {
 
     GameModel model;
@@ -14,6 +21,10 @@ public class GameView extends JFrame {
     JButton startButton;
     JButton[][] buttons;
 
+    /**
+     * Skapar GUI:t för spelet: bygger upp rutnätet med knappar,
+     * kopplar varje knapp till en lyssnare, och visar startläget från modellen.
+     */
     public GameView() {
         model = new GameModel();
 
@@ -29,6 +40,7 @@ public class GameView extends JFrame {
         buttons = new JButton[row][col];
         startButton = new JButton("Nytt Spel");
 
+        //Sätter ActionListener till "Nytt Spel"
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -39,10 +51,12 @@ public class GameView extends JFrame {
         topPanel.setLayout(new FlowLayout());
         topPanel.add(startButton);
 
-        boardPanel.setLayout(new GridLayout(4, 4));
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                buttons[i][j] = new JButton("[" + i + "," + j + "]");
+        // Skapar ett rutnät med knappar för varje bricka i spelet.
+        // Varje knapp får en lyssnare som skickar sin position till modellen vid klick.
+        boardPanel.setLayout(new GridLayout(row, col));
+        for (int i = 0; i < GameModel.SIZE; i++) {
+            for (int j = 0; j < GameModel.SIZE; j++) {
+                buttons[i][j] = new JButton("[" + i + "," + j + "]"); //Temporär text för debug
                 buttons[i][j].addActionListener(new TileButtonListener(i ,j));
                 boardPanel.add(buttons[i][j]);
             }
@@ -67,8 +81,11 @@ public class GameView extends JFrame {
         updateView();
     }
 
+    // Hindrar vinstmeddelande från att visas innan spelaren gjort något
     private boolean hasPlayed = false;
 
+    // Uppdaterar GUI:t så att varje knapp visar rätt brickvärde och färg
+    // Anropas efter varje drag eller när spelet startas om
     public void updateView() {
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
@@ -94,6 +111,8 @@ public class GameView extends JFrame {
         }
     }
 
+    // Hanterar klick på en bricka – försöker flytta den och uppdaterar GUI:t
+    // Visar vinstmeddelande om spelet är löst efter draget
     public boolean handleClick(int row, int col) {
         if (model.isSolved()) return false;
 
@@ -104,19 +123,20 @@ public class GameView extends JFrame {
 
     }
 
+    // Startar ett nytt spel genom att blanda brickorna och uppdatera GUI:t
     public void resetGame() {
         hasPlayed = false;
         model.shuffle();
         updateView();
     }
 
+    // Lyssnar på knapptryckningar och skickar rad/kolumn till handleClick()
     private class TileButtonListener implements ActionListener {
         int row;
         int col;
         public TileButtonListener(int row, int col) {
             this.row = row;
             this.col = col;
-
         }
 
         @Override

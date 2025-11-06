@@ -2,6 +2,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * GameModel hanterar all spelmekanik för 15-pusslet.
+ * Den håller koll på brädets tillstånd, tomrutans position,
+ * kontrollerar giltiga drag, blandar brickor och avgör om spelet är löst.
+ * Används av vyn för att uppdatera GUI:t baserat på modellens data.
+ */
+
 public class GameModel {
     private final int rows =4;
     private final int cols =4;
@@ -11,9 +18,9 @@ public class GameModel {
 
     public GameModel() {
         initBoardSolved();
-
     }
 
+    // Lägger ut brickorna i rätt ordning – används för att visa vinstläge direkt
     public void initBoardSolved() {
         board  = new int[][]{
                 {1, 2, 3, 4},
@@ -25,9 +32,10 @@ public class GameModel {
         emptyCol = 3;
     }
 
-    private static final int SIZE =4;
+    public static final int SIZE =4;
     private static final int TILE_COUNT = 16;
 
+    //Blandar brädet slumpmässigt tills ett lösbart bräde hittas
     public void shuffle(){
         List<Integer> tiles = new ArrayList<>();
         for(int i = 0; i < TILE_COUNT; i++){
@@ -50,9 +58,9 @@ public class GameModel {
         }
     }
 
-    // Lösbarhetsalgoritm baserad på inverser och tom ruta
+    // Returnerar true om brickorna ligger i en lösbar ordning enligt 15-pusselregler
+    // (baserat på antal inversioner och tomrutans position)
     // Källa: https://www.geeksforgeeks.org/dsa/check-instance-15-puzzle-solvable/
-
     public boolean isSolvable(List<Integer> tiles) {
         int inversions = 0;
         for (int i = 0; i < tiles.size(); i++) {
@@ -68,6 +76,7 @@ public class GameModel {
         return (rowFromBottom % 2 == 0) == (inversions % 2 == 0);
     }
 
+    // Returnerar true om brickan ligger direkt intill tomrutan (endast horisontellt eller vertikalt)
     public boolean canMove(int row, int col) {
         if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) return false;
         int rowDiff = Math.abs(row - emptyRow);
@@ -75,6 +84,7 @@ public class GameModel {
         return (rowDiff + colDiff == 1);
     }
 
+    // Flyttar brickan till tomrutan om draget är giltigt och uppdaterar tomrutans position
     public boolean move(int row, int col) {
         if (canMove(row, col)) {
             int temp = board[row][col];
@@ -89,6 +99,7 @@ public class GameModel {
         return false;
     }
 
+    // Kollar om alla brickor ligger i rätt ordning – används för att avgöra om spelaren har vunnit
     public boolean isSolved() {
         int expected = 1;
         for(int row = 0; row < SIZE; row++){
@@ -105,6 +116,7 @@ public class GameModel {
         return true;
     }
 
+    // Returnerar värdet på brickan vid (row, col) – används av vyn för att uppdatera GUI:t
     public int getValue(int row, int col) {
         return board[row][col];
     }
