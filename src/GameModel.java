@@ -69,10 +69,10 @@ public class GameModel {
     }
 
     public boolean canMove(int row, int col) {
-        if(row < 0 || row >= SIZE || col < 0 || col >= SIZE) return false;
-        int rowdifference = row - emptyRow;
-        int coldifference = col - emptyCol;
-        return (rowdifference + coldifference == 1);
+        if (row < 0 || row >= SIZE || col < 0 || col >= SIZE) return false;
+        int rowDiff = Math.abs(row - emptyRow);
+        int colDiff = Math.abs(col - emptyCol);
+        return (rowDiff + colDiff == 1);
     }
 
     public boolean move(int row, int col) {

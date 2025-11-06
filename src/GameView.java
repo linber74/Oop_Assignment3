@@ -93,8 +93,9 @@ public class GameView extends JFrame {
     }
 
     public boolean handleClick(int row, int col) {
+        if (model.isSolved()) return false;
+
         boolean moved = model.move(row, col);
-        System.out.println("Clicked: " + row + "," + col);
         updateView();
         return moved;
 
