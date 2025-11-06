@@ -1,3 +1,3 @@
 void main(){
-    GameVeiw gameVeiw = new GameVeiw();
+    GameView view = new GameView();
 }

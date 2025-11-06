@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class GameVeiw extends JFrame {
+public class GameView extends JFrame {
 
     GameModel model;
     JPanel bottomPanel;
@@ -12,7 +14,7 @@ public class GameVeiw extends JFrame {
     JButton startButton;
     JButton[][] buttons;
 
-    public GameVeiw() {
+    public GameView() {
         model = new GameModel();
 
         int row = 4;
@@ -27,6 +29,13 @@ public class GameVeiw extends JFrame {
         buttons = new JButton[row][col];
         startButton = new JButton("Nytt Spel");
 
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetGame();
+            }
+        });
+
         topPanel.setLayout(new FlowLayout());
         topPanel.add(startButton);
 
@@ -34,6 +43,7 @@ public class GameVeiw extends JFrame {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 buttons[i][j] = new JButton("[" + i + "," + j + "]");
+                buttons[i][j].addActionListener(new TileButtonListener(i ,j));
                 boardPanel.add(buttons[i][j]);
             }
         }
@@ -64,7 +74,7 @@ public class GameVeiw extends JFrame {
 
                 if(value == 0){
                     buttons[i][j].setText("");
-                    buttons[i][j].setBackground(Color.blue);
+                    buttons[i][j].setBackground(Color.WHITE);
                     buttons[i][j].setEnabled(false);
                 }
                 else{
@@ -84,13 +94,30 @@ public class GameVeiw extends JFrame {
 
     public boolean handleClick(int row, int col) {
         boolean moved = model.move(row, col);
+        System.out.println("Clicked: " + row + "," + col);
         updateView();
         return moved;
+
     }
 
     public void resetGame() {
         model.shuffle();
         updateView();
         statusLabel.setText("");
+    }
+
+    private class TileButtonListener implements ActionListener {
+        int row;
+        int col;
+        public TileButtonListener(int row, int col) {
+            this.row = row;
+            this.col = col;
+
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            handleClick(row, col);
+        }
     }
 }
