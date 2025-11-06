@@ -67,6 +67,8 @@ public class GameView extends JFrame {
         updateView();
     }
 
+    private boolean hasPlayed = false;
+
     public void updateView() {
         for (int i = 0; i < buttons.length; i++) {
             for (int j = 0; j < buttons[i].length; j++) {
@@ -84,7 +86,7 @@ public class GameView extends JFrame {
                 }
             }
         }
-        if (model.isSolved()){
+        if (hasPlayed && model.isSolved()){
             statusLabel.setText("DU VANN!!!");
         }
         else{
@@ -95,6 +97,7 @@ public class GameView extends JFrame {
     public boolean handleClick(int row, int col) {
         if (model.isSolved()) return false;
 
+        hasPlayed = true;
         boolean moved = model.move(row, col);
         updateView();
         return moved;
@@ -102,9 +105,9 @@ public class GameView extends JFrame {
     }
 
     public void resetGame() {
+        hasPlayed = false;
         model.shuffle();
         updateView();
-        statusLabel.setText("");
     }
 
     private class TileButtonListener implements ActionListener {
