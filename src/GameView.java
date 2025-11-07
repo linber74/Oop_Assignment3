@@ -113,7 +113,7 @@ public class GameView extends JFrame {
     // Hanterar klick på en bricka – försöker flytta den och uppdaterar GUI:t
     // Visar vinstmeddelande om spelet är löst efter draget
     public boolean handleClick(int row, int col) {
-        //if (model.isSolved()) return false;
+        if (model.isSolved()) return false;
 
         hasPlayed = true;
         boolean moved = model.move(row, col);
