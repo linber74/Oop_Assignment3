@@ -16,6 +16,11 @@ public class GameModel {
     private int emptyRow;
     private int emptyCol;
 
+
+    public GameModel() {
+        initBoardSolved();
+    }
+
     // Lägger ut brickorna i rätt ordning – används för att visa vinstläge direkt
     public void initBoardSolved() {
         board  = new int[][]{
@@ -28,9 +33,6 @@ public class GameModel {
         emptyCol = 3;
     }
 
-    public GameModel() {
-        initBoardSolved();
-    }
 
     public static final int SIZE =4;
     private static final int TILE_COUNT = 16;
