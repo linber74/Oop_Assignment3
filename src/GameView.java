@@ -16,7 +16,6 @@ public class GameView extends JFrame {
     JPanel bottomPanel;
     JPanel topPanel;
     JPanel boardPanel;
-    JLabel titleLabel;
     JLabel statusLabel;
     JButton startButton;
     JButton[][] buttons;
@@ -35,7 +34,6 @@ public class GameView extends JFrame {
         topPanel = new JPanel();
         bottomPanel = new JPanel();
         boardPanel = new JPanel();
-        titleLabel = new JLabel("15");
         statusLabel = new JLabel();
         buttons = new JButton[row][col];
         startButton = new JButton("Nytt Spel");
@@ -79,6 +77,7 @@ public class GameView extends JFrame {
 
 
         updateView();
+        statusLabel.setText("Så ser en vinst bräda ut");
     }
 
     // Hindrar vinstmeddelande från att visas innan spelaren gjort något
@@ -114,7 +113,7 @@ public class GameView extends JFrame {
     // Hanterar klick på en bricka – försöker flytta den och uppdaterar GUI:t
     // Visar vinstmeddelande om spelet är löst efter draget
     public boolean handleClick(int row, int col) {
-        if (model.isSolved()) return false;
+        //if (model.isSolved()) return false;
 
         hasPlayed = true;
         boolean moved = model.move(row, col);
